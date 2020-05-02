@@ -1056,7 +1056,7 @@ endif
 PROJECTDIR := $(BUILDDIR)/projects/$(OSD)/$(FULLTARGET)
 PROJECTDIR_SDL := $(BUILDDIR)/projects/sdl/$(FULLTARGET)
 PROJECTDIR_WIN := $(BUILDDIR)/projects/windows/$(FULLTARGET)
-
+PROJECTDIR_MESSUI := $(BUILDDIR)/projects/messui/$(FULLTARGET)
 .PHONY: all clean regenie generate FORCE
 all: $(GENIE) $(TARGETOS)$(ARCHITECTURE)
 regenie:
@@ -1182,9 +1182,16 @@ ifdef MSBUILD
 	$(SILENT) msbuild.exe $(PROJECTDIR_WIN)/vs2017-xp/$(PROJECT_NAME).sln $(MSBUILD_PARAMS)
 endif
 
+.PHONY: vs2017_ARM
+vs2017_ARM: generate
+	$(SILENT) $(GENIE) $(PARAMS) $(TARGET_PARAMS)  --NO_OPENGL=1 vs2017
+ifdef MSBUILD
+	$(SILENT) msbuild.exe $(PROJECTDIR_MESSUI)/vs2017/$(PROJECT_NAME).sln $(MSBUILD_PARAMS) 
+endif
+
 .PHONY: vs2017_uwp
 vs2017_uwp: generate
-	$(SILENT) $(GENIE) $(PARAMS) $(TARGET_PARAMS) --vs=winstore82 --osd=uwp --NO_USE_MIDI=1 --NO_OPENGL=1 --USE_QTDEBUG=0 --NO_USE_PORTAUDIO=1 --MODERN_WIN_API=1 vs2017
+	$(SILENT) $(GENIE) $(PARAMS) $(TARGET_PARAMS) --NO_OPENGL=1 vs2017
 ifdef MSBUILD
 	$(SILENT) msbuild.exe $(PROJECTDIR_WIN)/vs2017-winstore82/$(PROJECT_NAME).sln $(MSBUILD_PARAMS)
 endif
